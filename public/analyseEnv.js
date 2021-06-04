@@ -1,3 +1,5 @@
+//THIS CODE FROM OTHER PROJECT, USED FOR TESTING - NOT IN USE HERE
+
 let urlRemoteVR = 'https://us-south.functions.appdomain.cloud/api/v1/web/Katrina.Steen%40gmail.com_dev/default/AM%20Fish%20Analysis'
 const urlClassify = '/classifyURL';
 const checkFishMatch = '/checkFishMatch';
@@ -137,7 +139,35 @@ const res = await axios.post('/classifyFile', formData, {
       $('#textInfo').html("We couldn't find a valid image at that URL.");
       $('#urlPic').attr("src", qMark);
     });
-
   })
+async function getPreciseLocation() {
+    return new Promise(function (resolve, reject) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        resolve({ lat: position.coords.latitude, long: position.coords.longitude });
+      });
+    });
+  }
+
+  $('#upload').click(function () {
+
+    console.log('attempting to upload file')
+    var fd = new FormData();
+    fd.append('fishPic', $('#fishPic')[0].files[0]);
+
+    $.ajax({
+     // url: 'upload/uploadImage',
+      url: 'http://localhost:8001/api/upload/uploadImage',
+      data: fd,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function (data) {
+        console.log('upload success!')
+        $('#data').empty();
+        $('#data').append(data);
+      }
+    });
+  });
+
 })
 
